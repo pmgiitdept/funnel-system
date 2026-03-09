@@ -1,0 +1,827 @@
+body,
+html {
+	max-width: 100%;
+	height: 100vh;
+}
+
+body {
+	font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+}
+
+hr {
+	max-width: 50px;
+	border-width: 3px;
+	border-color: #F05F40;
+}
+
+hr.light {
+	border-color: #fff;
+}
+
+.bg-primary {
+	background-color: #F05F40 !important;
+}
+
+.bg-dark {
+	background-color: #212529 !important;
+}
+
+.text-faded {
+	color: rgba(255, 255, 255, 0.7);
+}
+
+section {
+	padding: 8rem 0;
+}
+
+.fa {
+	padding: 5px;
+	font-size: 25px;
+	width: 40px;
+	text-align: center;
+	text-decoration: none;
+	margin: 5px 2px;
+	border-radius: 50%;
+	background: #3B5998;
+	color: white;
+	opacity: 0.8;
+	transition: 0.3s;
+}
+
+.fa:hover {
+	text-decoration: none;
+	color: white;
+	opacity: 1;
+}
+
+.section-heading {
+	margin-top: 0;
+}
+
+::-moz-selection {
+	color: #fff;
+	background: #212529;
+	text-shadow: none;
+}
+
+::selection {
+	color: #fff;
+	background: #212529;
+	text-shadow: none;
+}
+
+img::-moz-selection {
+	color: #fff;
+	background: transparent;
+}
+
+img::selection {
+	color: #fff;
+	background: transparent;
+}
+
+img::-moz-selection {
+	color: #fff;
+	background: transparent;
+}
+
+.container {
+	max-width:100% !important;
+}
+
+#mainNav {
+	border-bottom: 1px solid #019cdc;
+	background-color: rgba(255, 255, 255, 1);
+	font-family: 'Helvetica Neue', Arial, 'Open Sans', sans-serif;
+	-webkit-transition: all 0.2s;
+	transition: all 0.2s;
+}
+
+#mainNav .navbar-brand {
+	font-weight: normal;
+	font-family: 'Times New Roman', serif;
+	color: #019cdc;
+}
+
+#mainNav .navbar-brand span {
+	vertical-align: middle;
+	line-height: 25px;
+	display: inline-block;
+}
+
+#mainNav .navbar-nav > li.nav-item > a.nav-link,
+#mainNav .navbar-nav > li.nav-item > a.nav-link:focus {
+	font-size: .9rem;
+	text-transform: uppercase;
+	color: #212529;
+}
+
+#mainNav .navbar-brand:focus, #mainNav .navbar-brand:hover, 
+#mainNav .navbar-nav > li.nav-item > a.nav-link:hover,
+#mainNav .navbar-nav > li.nav-item > a.nav-link:focus:hover {
+	color: #0368ff;
+}
+
+#mainNav .navbar-nav > li.nav-item > a.nav-link.active,
+#mainNav .navbar-nav > li.nav-item > a.nav-link:focus.active {
+	color: #0368ff !important;
+	background-color: transparent;
+}
+
+#mainNav .navbar-nav > li.nav-item > a.nav-link.active:hover,
+#mainNav .navbar-nav > li.nav-item > a.nav-link:focus.active:hover {
+	background-color: transparent;
+}
+
+header.masthead {
+	height: 100vh;
+	padding-top: 0;
+	padding-bottom: 0;
+	padding-top: 10rem;
+	padding-bottom: calc(10rem - 56px);
+	background-image: url("../img/header.jpg");
+	background-position: center center;
+	background-size: cover;
+}
+
+header.masthead hr {
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+header.masthead h1 {
+	font-size: 2rem;
+}
+
+header.masthead p {
+	font-weight: 300;
+}
+
+header.masthead .masthead-bg {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	width: 100%;
+	background-color: rgba(0, 48, 91, 0.65);
+}
+
+.content {
+	position: absolute;
+	margin: auto;
+	width: 250px;
+	left: 300px;
+	perspective: 1000px;
+	padding-top: 50px;
+}
+
+#services h5 {
+	text-transform: uppercase;
+	font-family: Helvetica, Arial, sans-serif;
+}
+
+#services p {
+	font-family: Arial, sans-serif;
+	font-style: italic;
+}
+
+.serviceHeader {
+	background-color: rgba(104, 184, 255, 0.2);
+}
+
+.serviceHead {
+	color: Navy;
+	text-transform: uppercase;
+}
+
+.content-carousel {
+	width: 100vw;
+	height: 450px;
+	clear: both;
+	overflow: hidden;
+	background: #FFF;
+}
+
+.section-title {
+	background-color: rgba(166, 206, 255, 0.4);
+}
+
+.service-box, .other-service-box h5 {
+	color: #0f4c85;
+}
+
+.service-box:hover {
+	background: rgba(104, 184, 255, 0.2);
+	transform: scale(1.1);
+	border-radius: 5px;
+	transition: background 0.1s, transform 0.3s ease-in;
+}
+
+.other-service-box .img-back {
+	position: absolute;
+	left: 0;
+	top: 0;
+	visibility: hidden;
+	opacity: 0;
+	-webkit-transition: visibility 0s, opacity 0.5s ease-in-out;
+	transition: visibility 0s, opacity 0.5s ease-in-out;
+}
+
+.other-service-box .img-main {
+	position: relative;
+	color: #0f4c85;
+	visibility: visible;
+	opacity: 1;
+	-webkit-transition: visibility 0s, opacity 0.5s ease-in-out;
+	transition: visibility 0s, opacity 0.5s ease-in-out;
+}
+
+.other-service-box:hover {
+	border: 2px solid #0f4c85;
+	border-radius: 5px;
+}
+
+.other-service-box:hover .img-back {
+	visibility: visible;
+	opacity: 1;
+}
+
+.other-service-box:hover .img-main {
+	visibility: hidden;
+	opacity: 0;
+}
+
+.other-service-box:hover h5 {
+	position: relative;
+	color: White;
+	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+	top: -30px;
+}
+
+#about_us {
+	background-color: rgba(0, 48, 91, 1);
+	color: #fff;
+}
+
+#about_history_left {
+	border-right: 1px solid #fff;
+}
+
+.about_text_bg {
+	background-color: rgba(211, 211, 211, 0.4)
+}
+
+#about_us_image {
+	background: url("../img/history/centerisland.jpg") no-repeat center center fixed;
+	display: table;
+	height: 100%;
+	width: 100%;
+	position: relative;
+	background-size: cover;
+}
+
+#contact {
+	background-image: url("../img/contact1back.png");
+	background-position: center center;
+	background-size: cover;
+	height: calc(100vh - 72px);
+	min-height: 550px;
+	padding: 0;
+	position: relative;
+}
+
+.contact-bg {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	height: calc(100vh - 72px);
+	min-height: 550px;
+	background-color: rgba(0, 48, 91, 0.65);
+}
+
+.modal-dialog {
+	max-width: calc(100vw - 10%);
+	max-height: calc(100vh - 40%);
+}
+
+.modal-header, .modal-footer {
+	padding: 5px 16px;
+}
+
+.modal-body {
+	max-height: calc(100% - 140px);
+}
+
+#location_map img {
+	width: 100%;
+	min-height: 100%;
+}
+
+.text-primary {
+	color: #F05F40 !important;
+}
+
+.about_service p, .about_business p {
+	font-style: italic;
+}
+
+#bc2 {
+	display: none;
+}
+
+@media (max-width: 575px) {
+	#mainNav .navbar-brand {
+		font-size: 1.1rem;
+	} 
+	.serviceHead h1, header.masthead .masthead-content h1,
+	.history_head h1, #clients h1, .contact-title h1 {
+		font-size: 1.4rem;
+	}
+	.section-subtitle h3 {
+		font-size: 1.2rem;
+	}
+	.serviceHead h1 {
+		padding: 20px !important;
+		margin: 0 auto !important;
+		text-align: center;
+	}
+	#mainNav .navbar-brand span {
+		line-height: 19px;
+	}
+	header.masthead .masthead-content h5 {
+		font-size: 0.9rem;
+	}
+	header.masthead .masthead-bg {
+		top: 77px;
+		height: calc(100vh - 77px);
+	}
+	#mainNav .navbar-brand img {
+		width: 60px;
+		height: 60px;
+	}
+	#clients img {
+		width: 95%;
+	}
+	#sgsPMGILogos {
+		display: inline;
+	}
+	#sgsLogo {
+		display: none;
+	}
+	.navbar-toggler {
+		line-height: 0.8;
+		font-size: 0.9rem;
+		padding: 0.25rem 0.40rem;
+	}
+	.col-sm-5 {
+		flex: 0 0 65%;
+		max-width: 65%;
+	}
+	.col-xxs-1 {
+		flex: 0 0 100%;
+		max-width: 100%;
+		height: 50px;
+	}
+	.col-xxs-12 {
+		flex: 0 0 100%;
+		max-width: 100%;
+	}
+	.pr-sm-3 {
+		padding-right: 1.2rem !important;
+	}
+	.serviceHead {
+		padding: 0 !important;
+		margin: 0 !important;
+	}
+	.service-box {
+		flex: 0 0 65%;
+		max-width: 65%;
+		margin: 15px auto !important;
+	}
+	.service-box img {
+		width: 35%;
+	}
+	.service-box h5 {
+		font-size: 1rem;
+	}
+	.service-box p {
+		font-size: 0.8rem;
+	}
+	.content-carousel {
+		height: 200px;
+		margin: 10px;
+	}
+	.content-carousel img {
+		width: 250px;
+		height: 150px;
+	}
+	.other-service-box .img-main {
+		height: 60px;
+		width: 60px;
+	}
+	.other-service-box .img-back {
+		height: 93px;
+		width: 190px;
+	}
+	.other-service-box h5 {
+		font-size: 0.9rem;
+	}
+	#other_services_entries {
+		min-width: 350px;
+	}
+	.history_head h1 {
+		margin-bottom: 2rem;
+	}
+	.vision-text {
+		border: 1px solid rgba(131, 183, 230, 1);
+	}
+	.about_business h4,
+	.vision-text h4, .about_service h4 {
+		font-size: 1.1rem;
+		padding: 0.5rem;
+		background: #019cdc;
+	}
+	.about_business p,
+	.about_service p,
+	.vision-text p {
+		margin: 0 30px;
+		font-size: 0.9rem;
+		line-height: 18px;
+	}
+	#about_history_left p, #about_history_right p{
+		font-size: 0.85rem;
+	}
+	#sq1 img {
+		margin-bottom: 1rem;
+	}
+	#bc2 {
+		display: block;
+		margin-bottom: 1rem;
+	}
+	#bc1 {
+		display: none;
+	}
+	.contact-title h1 {
+		padding-top: 2rem;
+		text-align: center;
+	}
+	.contact-address h4 {
+		font-size: 1.1rem;
+		margin-top: 4rem;
+	}
+	.contact-address p {
+		font-size: 0.9rem;
+		line-height: 1.1rem;
+	}
+	.contact-address input,
+	.contact-address textarea {
+		font-size: 0.8rem;
+		padding: 2px;
+	}
+	.contact-address button {
+		padding: .25rem .5rem;
+		font-size: .875rem;
+		line-height: 1.5;
+		border-radius: .2rem;
+	}
+	footer p {
+		font-size: 0.8rem;
+		margin-bottom: 0.5rem;
+	}
+	.fa {
+		font-size: 0.8rem;
+		width: 1.5rem;
+	}
+}
+
+@media (min-width: 576px) {
+	#mainNav .navbar-brand, .serviceHead h1, .client-head h1,
+	#about_us h1, header.masthead .masthead-content h1, .contact-title h1 {
+		font-size: 1.6rem;
+	}
+	#mainNav .navbar-brand img {
+		width: 90px;
+		height: 80px;
+	}
+	header.masthead .masthead-bg {
+		top: 97px;
+		height: calc(100vh - 97px);
+	}
+	header.masthead .masthead-content h5 {
+		font-size: 0.9rem;
+	}
+	.service-box h5 {
+		font-size: 1.1rem;
+	}
+	.service-box p {
+		font-size: 0.9rem;
+		line-height: 1.1rem;
+	}
+	.section-subtitle h3 {
+		font-size: 1.2em;
+	}
+	.serviceHead h1, .contact-title h1 {
+		float: right;
+	}
+	.service-box img {
+		height: 80px;
+	}
+	.other-service-box .img-main {
+		height: 70px;
+		width: 70px;
+	}
+	.other-service-box .img-back {
+		height: 115px;
+		width: 215px;
+	}
+	.other-service-box h5 {
+		font-size: 0.9rem;
+	}
+	.content-carousel img {
+		width: 350px;
+		height: 250px;
+	}
+	#other_services_entries {
+		min-width: 400px;
+	}
+	.history_head h1 {
+		margin-bottom: 3rem;
+	}
+	.vision-text {
+		border: 1px solid rgba(131, 183, 230, 1);
+	}
+	.vision-text p {
+		margin: 0 40px;
+		font-size: 1rem;
+		line-height: 1.4rem;
+	}
+	.vision-text h4, .about_service h4,
+	.about_business h4 {
+		font-size: 1.2rem;
+		background: #019cdc;
+	}
+	.about_service p,
+	.about_business p {
+		line-height: 1.3rem;
+	}
+	#bc2 {
+		display: block;
+	}
+	#bc1 {
+		display: none;
+	}
+/*	.contact-title h1 {
+		padding-top: 2rem;
+		text-align: center;
+	}*/
+}
+
+@media (min-width: 768px) {
+	#mainNav .navbar-brand{
+		font-size: 1.7rem;
+	}
+	#mainNav .navbar-brand img {
+		width: 90px;
+		height: 80px;
+	}
+	#sgsPMGILogos {
+		display: inline;
+	}
+	#sgsLogo {
+		display: none;
+	}
+	header.masthead .masthead-bg {
+		top: 97px;
+		height: calc(100vh - 97px);
+	}
+	header.masthead .masthead-content h1, 
+	.serviceHead h1, #about_us h1, #clients h1 {
+		font-size: 1.9rem;
+	}
+	.contact-title h1 {
+		font-size: 1.9rem;
+		text-align: left;
+		padding-top: 0;
+	}
+	header.masthead .masthead-content h5 {
+		font-size: 1.15rem;
+	}
+	#services p {
+		font-size: 14px;
+		line-height: 1.2em;
+	}
+	#services h5 {
+		font-size: 1.1em;
+		line-height: 1.2em;
+	}
+	.section-subtitle h3 {
+		font-size: 1.4em;
+	}
+	.other-service-box .img-main {
+		height: 80px;
+		width: 80px;
+	}
+	.other-service-box .img-back {
+		height: 115px;
+		width: 215px;
+	}
+	.other-service-box h5 {
+		font-size: 1.1rem;
+	}
+	.col-xxl-4 {
+		flex: 0 0 450px;
+		max-width: 450px;
+	}
+	.col-xxl-2a {
+		flex: 0 0 200px;
+		max-width: 200px;
+	}
+	#mainNav {
+		border-color: transparent;
+	}
+	#mainNav .navbar-brand:focus, #mainNav .navbar-brand:hover {
+		color: #0368ff;
+	}
+	#mainNav .navbar-nav > li.nav-item > a.nav-link {
+		padding: 0.5rem 0.8rem;
+	}
+	#mainNav .navbar-nav > li.nav-item > a.nav-link,
+	#mainNav .navbar-nav > li.nav-item > a.nav-link:focus {
+		color: rgba(0, 0, 0, 0.7);
+	}
+	#mainNav .navbar-nav > li.nav-item > a.nav-link:hover,
+	#mainNav .navbar-nav > li.nav-item > a.nav-link:focus:hover {
+		color: #0368ff;
+	}
+	#mainNav.navbar-shrink {
+		border-bottom: 1px solid #019cdc;
+		background-color: #fff;
+	}
+	#mainNav.navbar-shrink .navbar-nav > li.nav-item > a.nav-link,
+	#mainNav.navbar-shrink .navbar-nav > li.nav-item > a.nav-link:focus {
+		color: #212529;
+	}
+	#mainNav.navbar-shrink .navbar-nav > li.nav-item > a.nav-link:hover,
+	#mainNav.navbar-shrink .navbar-nav > li.nav-item > a.nav-link:focus:hover {
+		color: #0368ff;
+	}
+	.col-mdx-5 {
+		flex: 0 0 45%;
+		max-width: 45%;
+	}
+	.vision-text {
+		padding: 0 0 0 1rem;
+		border-left: 0.6rem solid rgba(131, 183, 230, 1);
+		border-top: none;
+		border-bottom: none;
+		border-right: none;
+	}
+	.vision-text h4, .about_service h4,
+	.about_business h4 {
+		font-size: 1.5rem;
+	}
+	.vision-text p {
+		margin: 0;
+	}
+	.col-xxl-3 {
+		flex: 0 0 360px;
+		max-width: 360px;
+	}
+
+	.vision-text h4, .about_service h4,
+	.about_business h4 {
+		background: transparent;
+	}
+	/*look at this*/
+	.about_service {
+		padding-right: 1rem;
+		border-right: .6rem solid rgba(131, 183, 230, 1);
+	}
+
+	.about_business {
+		padding-left: 1rem;
+		border-left: .6rem solid rgba(131, 183, 230, 1);
+	}
+
+	.about_service p, .about_business p {
+		font-size: 14px;
+	}
+	#about_history_left p, #about_history_right p {
+		font-size: 0.9rem;
+		line-height: 1.2rem;
+	}
+	#bc2 {
+		display: none;
+	}
+	#bc1 {
+		display: block;
+	}
+}
+
+@media (min-width: 992px) {
+	#mainNav .navbar-brand img, #navbarResponsive img {
+		width: 110px;
+		height: 100px;
+	}
+	#mainNav .navbar-brand img {
+		padding-right: 10px; 
+	}
+	#navbarResponsive img {
+		padding-left: 10px; 
+	}
+	#sgsPMGILogos {
+		display: none;
+	}
+	#sgsLogo {
+		display: inline;
+	}
+	header.masthead .masthead-bg {
+		top: 117px;
+		height: calc(100vh - 117px);
+	}
+	header.masthead .masthead-content h1, .contact-title h1, 
+	#services .serviceHead h1, #about_us h1, #clients h1 {
+		font-size: 2rem;
+	}
+	#services p {
+		font-size: 16px;
+		line-height: 1.3em;
+	}
+	#services h5 {
+		font-size: 1.4em;
+		line-height: 1.2em;
+	}
+	.col-xxl-3 {
+		flex: 0 0 455px;
+		max-width: 455px;
+	}
+	.col-xxl-4 {
+		flex: 0 0 500px;
+		max-width: 500px;
+	}
+	.section-subtitle h3 {
+		text-transform: uppercase;
+		font-size: 1.8em;
+	}
+	.other-service-box .img-main {
+		height: 100px;
+		width: 100px;
+	}
+	.other-service-box h5 {
+		font-size: 1.25rem;
+	}
+	.content-carousel img {
+		width: 500px;
+		height: 350px;
+	}
+	.about_service p, .about_business p {
+		font-size: 1rem;
+	}
+	#about_history_left p, #about_history_right p{
+		font-size: 1rem;
+		line-height: 1.35rem;
+	}
+}
+
+@media (min-width: 1200px) {
+	#mainNav .navbar-nav > li.nav-item > a.nav-link,
+	#mainNav .navbar-nav > li.nav-item > a.nav-link:focus {
+		font-size: 1.1rem;
+	}
+
+	header.masthead .masthead-content h1, .contact-title h1, 
+	#services .serviceHead h1, #about_us h1, #clients h1 {
+		font-size: 2.5rem;
+		line-height: 2.6rem;
+	}
+
+	.col-xxl-2 {
+		flex: 0 0 25%;
+		max-width: 25%;
+	}
+	.col-xxl-2a {
+		flex: 0 0 260px;
+		max-width: 260px;
+	}
+}
+
+@media (min-width: 1300px) {
+	.col-xxl-1 {
+		flex: 0 0 300px;
+		max-width: 300px;
+	}
+	.col-xxl-2 {
+		flex: 0 0 16.67%;
+		max-width: 16.67%;
+	}
+	.col-xxl-3 {
+		flex: 0 0 475px;
+		max-width: 475px;
+	}
+	.col-xxl-4 {
+		flex: 0 0 600px;
+		max-width: 600px;
+	}
+}
