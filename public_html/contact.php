@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         // ⚠️ REPLACE THESE WITH YOUR INFO ⚠️
         $mail->Username   = 'bermasjonathan2@gmail.com'; 
-        $mail->Password   = 'zbad cyhw yzoi jwai'; 
+        $mail->Password   = 'thqt vwzb enes ckij'; 
         // ⚠️ REPLACE THESE WITH YOUR INFO ⚠️
 
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
