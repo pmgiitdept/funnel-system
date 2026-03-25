@@ -273,10 +273,23 @@
 								<textarea name="message" placeholder="Message" rows="4" required style="width:100%; height:100%; padding:5px; box-sizing:border-box; resize:vertical;"></textarea>
 							</div>
 						</div>
+						<div style="position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;" aria-hidden="true">
+							<label for="website">Leave this field empty</label>
+							<input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+						</div>
+						<input type="hidden" name="submitted_at" id="submitted_at" value="">
 						<div style="max-width:520px; text-align:right; margin-top:8px;">
 							<button type="submit" style="background-color:#2e9ce6; color:#fff; border:none; padding:5px 20px; cursor:pointer; border-radius:4px;">Send</button>
 						</div>
 						</form>
+						<script>
+							(function() {
+								var submittedAtInput = document.getElementById('submitted_at');
+								if (submittedAtInput) {
+									submittedAtInput.value = Math.floor(Date.now() / 1000);
+								}
+							})();
+						</script>
 					</div>
 				</div>
 			</div>

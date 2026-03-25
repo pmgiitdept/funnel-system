@@ -1,68 +1,201 @@
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
 
-// Load PHPMailer files
 require 'PHPMailer/Exception.php';
 require 'PHPMailer/PHPMailer.php';
 require 'PHPMailer/SMTP.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
-    // 1. Get and clean form data
-    $name = htmlspecialchars(trim($_POST['name']));
-    $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
-    $subject_line = htmlspecialchars(trim($_POST['subject']));
-    $message = trim($_POST['message']);
+const CONTACT_RATE_LIMIT_FILE = __DIR__ . '/.contact_rate_limit.json';
+const CONTACT_ENV_FILE = __DIR__ . '/../.env';
+const CONTACT_COOLDOWN_SECONDS = 120;
+const CONTACT_MAX_SUBMISSIONS_PER_HOUR = 5;
+const CONTACT_RATE_WINDOW_SECONDS = 3600;
+const CONTACT_MIN_MESSAGE_LENGTH = 10;
 
-    $mail = new PHPMailer(true);
+function redirectWithAlert($message)
+{
+    $safeMessage = htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
 
-    try {
-        // 2. Gmail SMTP Settings
-        $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com';
-        $mail->SMTPAuth   = true;
-        
-        // ⚠️ REPLACE THESE WITH YOUR INFO ⚠️
-        $mail->Username   = 'bermasjonathan2@gmail.com'; 
-        $mail->Password   = 'thqt vwzb enes ckij'; 
-        // ⚠️ REPLACE THESE WITH YOUR INFO ⚠️
+    echo "<script>
+        alert('{$safeMessage}');
+        window.location.href = 'index.html';
+    </script>";
+    exit;
+}
 
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
+function getClientIpAddress()
+{
+    return $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+}
 
-        // 3. Email recipients
-        $mail->setFrom($mail->Username, $name);
-        $mail->addAddress('bermasjonathan2@gmail.com'); // Test email goes to you
-        $mail->addReplyTo($email, $name);
+function loadEnvironmentConfig($filePath)
+{
+    if (!file_exists($filePath)) {
+        return [];
+    }
 
-        // 4. Email content
-        $mail->isHTML(true);
-        $mail->Subject = "New Website Inquiry: $subject_line";
-        $mail->Body    = "
-            <h2>New Contact Form Submission</h2>
-            <p><strong>Name:</strong> $name</p>
-            <p><strong>Email:</strong> $email</p>
-            <p><strong>Subject:</strong> $subject_line</p>
-            <hr>
-            <p><strong>Message:</strong><br>$message</p>
-        ";
+    $config = parse_ini_file($filePath, false, INI_SCANNER_RAW);
 
-        // 5. Send email
-        $mail->send();
-        
-        // Success - redirect back to index
-        echo "<script>
-            alert('✅ Message sent successfully!');
-            window.location.href = 'index.html';
-        </script>";
+    return is_array($config) ? $config : [];
+}
 
-    } catch (Exception $e) {
-        // Error
-        echo "<script>
-            alert('❌ Error: Message could not be sent. {$mail->ErrorInfo}');
-            window.location.href = 'index.html';
-        </script>";
+function ensureRateLimitFileExists()
+{
+    if (!file_exists(CONTACT_RATE_LIMIT_FILE)) {
+        file_put_contents(CONTACT_RATE_LIMIT_FILE, json_encode(new stdClass()));
     }
 }
-?>
+
+function checkRateLimit($ipAddress)
+{
+    $now = time();
+    $rateLimitData = [];
+
+    ensureRateLimitFileExists();
+
+    $fileHandle = fopen(CONTACT_RATE_LIMIT_FILE, 'c+');
+    if ($fileHandle === false) {
+        return true;
+    }
+
+    try {
+        if (!flock($fileHandle, LOCK_EX)) {
+            fclose($fileHandle);
+            return true;
+        }
+
+        $fileContents = stream_get_contents($fileHandle);
+        if ($fileContents !== false && trim($fileContents) !== '') {
+            $decodedData = json_decode($fileContents, true);
+            if (is_array($decodedData)) {
+                $rateLimitData = $decodedData;
+            }
+        }
+
+        foreach ($rateLimitData as $trackedIp => $timestamps) {
+            $filteredTimestamps = array_values(array_filter((array) $timestamps, function ($timestamp) use ($now) {
+                return is_numeric($timestamp) && ($now - (int) $timestamp) < CONTACT_RATE_WINDOW_SECONDS;
+            }));
+
+            if (empty($filteredTimestamps)) {
+                unset($rateLimitData[$trackedIp]);
+                continue;
+            }
+
+            $rateLimitData[$trackedIp] = $filteredTimestamps;
+        }
+
+        $ipTimestamps = $rateLimitData[$ipAddress] ?? [];
+        $lastSubmission = empty($ipTimestamps) ? null : (int) end($ipTimestamps);
+
+        if ($lastSubmission !== null && ($now - $lastSubmission) < CONTACT_COOLDOWN_SECONDS) {
+            flock($fileHandle, LOCK_UN);
+            fclose($fileHandle);
+            return false;
+        }
+
+        if (count($ipTimestamps) >= CONTACT_MAX_SUBMISSIONS_PER_HOUR) {
+            flock($fileHandle, LOCK_UN);
+            fclose($fileHandle);
+            return false;
+        }
+
+        $ipTimestamps[] = $now;
+        $rateLimitData[$ipAddress] = $ipTimestamps;
+
+        rewind($fileHandle);
+        ftruncate($fileHandle, 0);
+        fwrite($fileHandle, json_encode($rateLimitData));
+
+        flock($fileHandle, LOCK_UN);
+        fclose($fileHandle);
+
+        return true;
+    } catch (Throwable $exception) {
+        flock($fileHandle, LOCK_UN);
+        fclose($fileHandle);
+        return true;
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: index.html');
+    exit;
+}
+
+$honeypot = trim($_POST['website'] ?? '');
+if ($honeypot !== '') {
+    redirectWithAlert('Message could not be sent. Please try again.');
+}
+
+$submittedAt = isset($_POST['submitted_at']) ? (int) $_POST['submitted_at'] : 0;
+if ($submittedAt > 0 && (time() - $submittedAt) < 3) {
+    redirectWithAlert('Please wait a moment before sending your message.');
+}
+
+$name = htmlspecialchars(trim($_POST['name'] ?? ''), ENT_QUOTES, 'UTF-8');
+$email = filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
+$subjectLine = htmlspecialchars(trim($_POST['subject'] ?? ''), ENT_QUOTES, 'UTF-8');
+$message = trim($_POST['message'] ?? '');
+
+if ($name === '' || $email === '' || $subjectLine === '' || $message === '') {
+    redirectWithAlert('Please complete all required fields.');
+}
+
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    redirectWithAlert('Please enter a valid email address.');
+}
+
+if (mb_strlen($message) < CONTACT_MIN_MESSAGE_LENGTH) {
+    redirectWithAlert('Please enter a longer message before sending.');
+}
+
+if (!checkRateLimit(getClientIpAddress())) {
+    redirectWithAlert('Too many messages were sent from your network. Please try again later.');
+}
+
+$envConfig = loadEnvironmentConfig(CONTACT_ENV_FILE);
+$smtpUsername = trim($envConfig['SMTP_USERNAME'] ?? '');
+$smtpPassword = trim($envConfig['SMTP_PASSWORD'] ?? '');
+$smtpHost = trim($envConfig['SMTP_HOST'] ?? 'smtp.gmail.com');
+$smtpPort = (int) ($envConfig['SMTP_PORT'] ?? 587);
+$smtpRecipient = trim($envConfig['SMTP_TO_EMAIL'] ?? $smtpUsername);
+
+if ($smtpUsername === '' || $smtpPassword === '' || $smtpRecipient === '') {
+    redirectWithAlert('Email service is not configured yet. Please contact the site administrator.');
+}
+
+$mail = new PHPMailer(true);
+
+try {
+    $mail->isSMTP();
+    $mail->Host = $smtpHost;
+    $mail->SMTPAuth = true;
+    $mail->Username = $smtpUsername;
+    $mail->Password = $smtpPassword;
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port = $smtpPort;
+
+    $mail->setFrom($mail->Username, 'PMGI Website');
+    $mail->addAddress($smtpRecipient);
+    $mail->addReplyTo($email, $name);
+
+    $safeMessage = nl2br(htmlspecialchars($message, ENT_QUOTES, 'UTF-8'));
+
+    $mail->isHTML(true);
+    $mail->Subject = "New Website Inquiry: $subjectLine";
+    $mail->Body = "
+        <h2>New Contact Form Submission</h2>
+        <p><strong>Name:</strong> $name</p>
+        <p><strong>Email:</strong> $email</p>
+        <p><strong>Subject:</strong> $subjectLine</p>
+        <hr>
+        <p><strong>Message:</strong><br>{$safeMessage}</p>
+    ";
+
+    $mail->send();
+    redirectWithAlert('Message sent successfully!');
+} catch (Exception $e) {
+    redirectWithAlert('Message could not be sent right now. Please try again later.');
+}
