@@ -1,0 +1,8 @@
+.contact_rate_limit.json
+public_html/.contact_rate_limit.json
+.contact_mail.log
+public_html/.contact_mail.log
+.env
+.env.*
+!.env.example
+!funnel-system/.env.example
