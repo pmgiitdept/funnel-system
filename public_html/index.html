@@ -261,40 +261,32 @@
 						<p class="mb-0 text-white">Tel:&nbsp;(+632)&nbsp;856-3553</p>
 						<p class="mb-4 text-white">Fax:&nbsp;(+632)&nbsp;808-9282</p>
 						<button type="button" class="btn btn-outline-primary text-white" data-toggle="modal" data-backdrop="static" data-target="#popMap" data-keyboard="false">Click Here to Find Us</button>
-						<p class="mt-3 text-white">For any general inquiries, please fill in the following contact form:</p>
-						<form action="contact.php" method="POST">
-						<div style="display:flex; gap:10px; max-width:520px;">
-							<div style="flex:0 0 200px; display:flex; flex-direction:column; gap:5px;">
-								<input type="text" name="name" placeholder="Name" required style="width:100%; padding:5px; box-sizing:border-box;">
-								<input type="email" name="email" placeholder="Email" required style="width:100%; padding:5px; box-sizing:border-box;">
-								<input type="text" name="subject" placeholder="Subject" required style="width:100%; padding:5px; box-sizing:border-box;">
-							</div>
-							<div style="flex:1; display:flex; flex-direction:column;">
-								<textarea name="message" placeholder="Message" rows="4" required style="width:100%; height:100%; padding:5px; box-sizing:border-box; resize:vertical;"></textarea>
-							</div>
-						</div>
-						<div style="position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;" aria-hidden="true">
-							<label for="website">Leave this field empty</label>
-							<input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
-						</div>
-						<input type="hidden" name="submitted_at" id="submitted_at" value="">
-						<div style="max-width:520px; text-align:right; margin-top:8px;">
-							<button type="submit" style="background-color:#2e9ce6; color:#fff; border:none; padding:5px 20px; cursor:pointer; border-radius:4px;">Send</button>
-						</div>
-						</form>
-						<script>
-							(function() {
-								var submittedAtInput = document.getElementById('submitted_at');
-								if (submittedAtInput) {
-									submittedAtInput.value = Math.floor(Date.now() / 1000);
-								}
-							})();
-						</script>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
+
+	<div class="sticky-contact-form" id="stickyContactForm">
+		<form action="contact.php" method="POST" class="sticky-contact-form-inner" id="contactForm">
+			<div class="sticky-contact-heading">
+				<i class="fa fa-envelope" aria-hidden="true"></i>
+				<span>Contact Us</span>
+			</div>
+			<div class="sticky-contact-grid">
+				<input type="text" name="name" placeholder="Name" required aria-label="Name">
+				<input type="email" name="email" placeholder="Email" required aria-label="Email">
+				<input type="text" name="subject" placeholder="Subject" required aria-label="Subject">
+				<textarea name="message" placeholder="Message" rows="3" required aria-label="Message"></textarea>
+			</div>
+			<div class="contact-honeypot" aria-hidden="true">
+				<label for="website">Leave this field empty</label>
+				<input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+			</div>
+			<input type="hidden" name="submitted_at" id="submitted_at" value="">
+			<button type="submit" class="sticky-contact-send">Send</button>
+		</form>
+	</div>
 
 	<footer class="text-center">
 		<p class="mt-2">&copy;&nbsp;2018 Professional Maintenance Group Inc.&nbsp;&nbsp;<a class="fa fa-facebook" href="https://www.facebook.com/ProfessionalMaintenanceGroupInc/" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-instagram" href="https://www.instagram.com/pmgi_ph/" target="_blank"></a></p>

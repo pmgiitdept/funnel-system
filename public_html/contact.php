@@ -7,6 +7,7 @@ require 'PHPMailer/PHPMailer.php';
 require 'PHPMailer/SMTP.php';
 
 const CONTACT_RATE_LIMIT_FILE = __DIR__ . '/.contact_rate_limit.json';
+const CONTACT_MAIL_LOG_FILE = __DIR__ . '/.contact_mail.log';
 const CONTACT_ENV_FILE = __DIR__ . '/../.env';
 const CONTACT_COOLDOWN_SECONDS = 120;
 const CONTACT_MAX_SUBMISSIONS_PER_HOUR = 5;
@@ -38,6 +39,13 @@ function loadEnvironmentConfig($filePath)
     $config = parse_ini_file($filePath, false, INI_SCANNER_RAW);
 
     return is_array($config) ? $config : [];
+}
+
+function logContactMailError($message)
+{
+    $timestamp = date('Y-m-d H:i:s');
+
+    file_put_contents(CONTACT_MAIL_LOG_FILE, "[$timestamp] $message" . PHP_EOL, FILE_APPEND | LOCK_EX);
 }
 
 function ensureRateLimitFileExists()
@@ -157,12 +165,14 @@ if (!checkRateLimit(getClientIpAddress())) {
 
 $envConfig = loadEnvironmentConfig(CONTACT_ENV_FILE);
 $smtpUsername = trim($envConfig['SMTP_USERNAME'] ?? '');
-$smtpPassword = trim($envConfig['SMTP_PASSWORD'] ?? '');
+$smtpPassword = preg_replace('/\s+/', '', trim($envConfig['SMTP_PASSWORD'] ?? ''));
 $smtpHost = trim($envConfig['SMTP_HOST'] ?? 'smtp.gmail.com');
 $smtpPort = (int) ($envConfig['SMTP_PORT'] ?? 587);
+$smtpSecure = strtolower(trim($envConfig['SMTP_SECURE'] ?? ($smtpPort === 465 ? 'ssl' : 'tls')));
 $smtpRecipient = trim($envConfig['SMTP_TO_EMAIL'] ?? $smtpUsername);
 
 if ($smtpUsername === '' || $smtpPassword === '' || $smtpRecipient === '') {
+    logContactMailError('SMTP config is incomplete. Check SMTP_USERNAME, SMTP_PASSWORD, and SMTP_TO_EMAIL.');
     redirectWithAlert('Email service is not configured yet. Please contact the site administrator.');
 }
 
@@ -174,7 +184,7 @@ try {
     $mail->SMTPAuth = true;
     $mail->Username = $smtpUsername;
     $mail->Password = $smtpPassword;
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->SMTPSecure = $smtpSecure === 'ssl' ? PHPMailer::ENCRYPTION_SMTPS : PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port = $smtpPort;
 
     $mail->setFrom($mail->Username, 'PMGI Website');
@@ -197,5 +207,6 @@ try {
     $mail->send();
     redirectWithAlert('Message sent successfully!');
 } catch (Exception $e) {
+    logContactMailError("PHPMailer failed: {$e->getMessage()} | ErrorInfo: {$mail->ErrorInfo}");
     redirectWithAlert('Message could not be sent right now. Please try again later.');
 }
